@@ -4,9 +4,16 @@ import 'package:boring_app/pages/home_page.dart';
 import 'package:boring_app/utils/routes.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  String name = "";
+  bool changeButton = false;
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -23,7 +30,7 @@ class LoginPage extends StatelessWidget {
                 height: 15,
               ),
               Text(
-                'Boring stuffs ahead',
+                'Welcome $name ',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -41,6 +48,12 @@ class LoginPage extends StatelessWidget {
                         labelText: "USERNAME",
                         hintText: "enter your username ",
                       ),
+                      onChanged: ((value) {
+                        name = value;
+                        setState(
+                          () {},
+                        );
+                      }),
                     ),
                     TextFormField(
                       obscureText: true,
@@ -53,13 +66,51 @@ class LoginPage extends StatelessWidget {
                     SizedBox(
                       height: 40,
                     ),
-                    ElevatedButton(
-                      onPressed: () {
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     Navigator.pushNamed(context, MyRoutes.homeRoute);
+                    //   },
+                    //   child: Text('login '),
+                    //   style: TextButton.styleFrom(minimumSize: Size(150, 45)),
+                    //
+                    //
+                    InkWell(
+                      onTap: () async {
+                        setState(() {
+                          changeButton = true;
+                        });
+                        await Future.delayed(Duration(seconds: 1));
                         Navigator.pushNamed(context, MyRoutes.homeRoute);
+
                       },
-                      child: Text('login '),
-                      style: TextButton.styleFrom(minimumSize: Size(150, 45)),
-                    )
+                      child: AnimatedContainer(
+                        duration: Duration(seconds: 1),
+                        height: 40,
+                        width: changeButton ? 50 : 150,
+                        alignment: Alignment.center,
+                        child: changeButton
+                            ? Icon(
+                                Icons.done,
+                                color: Colors.white,
+                              )
+                            : Text(
+                                'Login',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                        decoration: BoxDecoration(
+                          color: Colors.deepPurple,
+                          shape: changeButton
+                              ? BoxShape.circle
+                              : BoxShape.rectangle,
+
+                          //borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               )
@@ -67,5 +118,4 @@ class LoginPage extends StatelessWidget {
           ),
         ));
   }
-  // comment for no reason at all
 }
